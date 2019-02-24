@@ -14,8 +14,17 @@ def azs_read():
 
 def oder_read():
     """ Read input.txt and return list of dict-s with clients. """
-    # TODO
-    # Должна возвращать список словарей такого плана: [{'time':'01:25', 'liters': 10, 'mark': 'АИ-80'}, {'01:26':...}..]
+    lst_clients = []
+    with open('input.txt') as f:
+        clients = f.readlines()
+        for line in clients:
+            str = line.split()
+            d = {}
+            d['time'] = str[0]
+            d['liters'] = int(str[1])
+            d['mark'] = str[2]
+            lst_clients.append(d)
+    return lst_clients
 
 
 def duration():
@@ -26,14 +35,19 @@ def duration():
 
 def min_hour(minutes):
     """ Minutes to hours. """
-    # TODO
-    # Уже готова
+    hours = (minutes % 1440) // 60
+    mins = (minutes % 1440) % 60
+    time = "%s:%s" % (str(hours).zfill(2), str(mins).zfill(2))
+    return time
 
 
 def time_leaving(hours, duration):
     """ Hours to minutes and returns information about leaving. """
-    # TODO
-    # Переводит часы формата "1:38" в минуты, прибавляет значение из функции duration и возвращает опять часы
+    r = int(duration())
+    hour = int(hours[0:2])
+    minut = int(hours[3:6])
+    minutes = hour * 60 + minut + r
+    return min_hour(minutes)
 
 
 def azs_print(list_azs):
@@ -67,6 +81,7 @@ def main():
             azs_print(list_azs)
 
         print(ru.CLIENT_LEAVE.format(time_leaving()))
+    print(list_orders)
 
 
 if __name__ == '__main__':
