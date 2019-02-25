@@ -4,12 +4,27 @@ Grigorev A., Batenev P., Zhambaeva D.
 """
 
 import rulocal as ru
-
+import random
 
 def azs_read():
     """ Read azs.txt and return list of dict-s with automats. """
-    # TODO
     # Должна возвращать список словарей такого плана: [{'max_tern': , 'marks': , 'tern': }, {'max_tern': , ....}.. ]
+    lst = {}
+    with open('azs.txt', 'r') as f_in:
+        text = f_in.readlines()
+        text = [line.strip() for line in text]
+        for i in range(len(text)):
+            lst_1 = {}
+            line = text[i]
+            line = line.split()
+            [lst_1['max_tern']] = line[1]
+            lst_2 = []
+            for j in range(2, len(line)):
+                h = line[j]
+                lst_2.append(h)
+            lst_1.update({'marks': lst_2})
+            lst[line[0]] = lst_1
+    return lst
 
 
 def oder_read():
@@ -29,8 +44,17 @@ def oder_read():
 
 def duration():
     """ How long will the car refuel. """
-    # TODO
-    # Уже готова
+    litr = int(input())
+    time = litr // 10
+    if litr % 10 == 0:
+        time = litr // 10
+        print(time)
+    else:
+        time = litr // 10 + 1
+        print(time)
+    number = random.randint(-1, 1)
+    t = time + number
+    return t
 
 
 def min_hour(minutes):
