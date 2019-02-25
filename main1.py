@@ -87,26 +87,42 @@ def azs_choice(list_azs):
 
 def main():
     """ Main function. """
-    list_orders = oder_read()
-    list_azs = azs_read()
+    orders = oder_read()
+    azs = azs_read()
     dict_leaves = {}
+    count = 0
+    min_before = 0
 
     for minutes in range(1440):
 
         time = min_hour(minutes)
+        time_dur = duration()
+        # while time != list_orders[0]['time'] and count != len(list_orders):
 
-        if time in list_orders[minutes]:
-            print(ru.NEW_CLIENT.format(time, list_orders[minutes][time], azs_choice(list_azs)))
-            dict_leaves[str(time_leaving(time))] = time_leaving
+        # отслежка прибытия (с учётом одновременного)
+        if time == orders[count]['time']:
+            print(ru.NEW_CLIENT.format(time, orders[count]['mark'],
+                                       orders[count]['liters'],
+                                       time_dur, azs_choice(azs)))
+            min_before += 1
+            count += 1
+        elif min_hour(min_before) == orders[count]['time']:
+            print(ru.NEW_CLIENT.format(min_hour(min_before),
+                                       orders[count]['mark'],
+                                       orders[count]['liters'],
+                                       time_dur, azs_choice(azs)))
+            count += 1
+        else:
+            min_before += 1
 
-        azs_print(list_azs)
+
+        azs_print(azs)
 
         if time in dict_leaves:
-            azs_print(list_azs)
+            azs_print(azs)
 
         print(ru.CLIENT_LEAVE.format(time_leaving()))
-    print(list_orders)
-
+    print(orders)
 
 if __name__ == '__main__':
     main()
