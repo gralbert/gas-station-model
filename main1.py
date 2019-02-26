@@ -39,19 +39,17 @@ def oder_read():
     return lst_clients
 
 
-def duration():
+def duration(litr):
     """ How long will the car refuel. """
-    litr = int(input())
     time = litr // 10
     if litr % 10 == 0:
+        number = random.randint(-1, 1)
         time = litr // 10
-        print(time)
+        return time
     else:
+        number = random.randint(-1, 1)
         time = litr // 10 + 1
-        print(time)
-    number = random.randint(-1, 1)
-    t = time + number
-    return t
+        return time
 
 
 def min_hour(minutes):
@@ -77,7 +75,7 @@ def azs_print(list_azs):
         print(ru.AZS_INF.format(automat['num'],
                                 automat['max_tern'],
                                 automat['mark'],
-                                automat['mark']*'*'))
+                                automat['tern']*'*'))
 
 
 def azs_choice(list_azs, ben):
@@ -95,27 +93,34 @@ def main():
     dict_leaves = {}
     count = 0
     min_before = 0
+    go_out = 0
 
     for minutes in range(1440):
 
         time = min_hour(minutes)
-        time_dur = duration()
         # while time != list_orders[0]['time'] and count != len(list_orders):
 
         # отслежка прибытия (с учётом одновременного)
-        if time == orders[count]['time']:
-            num_automat = azs_choice(azs, orders[count]['mark'])
+
+        time_dur = duration(orders[count]['liters'])
+        #print(orders[count]['liters'])
+        #print(orders[count]['mark'])
+        num_automat = azs_choice(azs, orders[count]['mark'])
+        if time == orders[count]['time'] and not(num_automat is None):
+
+
             print(ru.NEW_CLIENT.format(time, orders[count]['mark'],
                                        orders[count]['liters'],
                                        time_dur,
                                        num_automat))
 
             azs[num_automat-1]['tern'] += 1
+            azs_print(azs)
+
             min_before += 1
             count += 1
 
-        elif min_hour(min_before) == orders[count]['time']:
-            num_automat = azs_choice(azs, orders[count]['mark'])
+        elif min_hour(min_before) == orders[count]['time'] and not(num_automat is None):
             print(ru.NEW_CLIENT.format(min_hour(min_before),
                                        orders[count]['mark'],
                                        orders[count]['liters'],
@@ -123,18 +128,22 @@ def main():
                                        num_automat))
 
             azs[num_automat - 1]['tern'] += 1
-            count += 1
-
-        else:
-            min_before += 1
-
-        azs_print(azs)
-
-        if time in dict_leaves:
             azs_print(azs)
 
-        print(ru.CLIENT_LEAVE.format(time_leaving()))
-    print(orders)
+            count += 1
+
+        elif not(num_automat is None):
+            min_before += 1
+        else:
+            go_out +=1
+
+
+
+        #if time in dict_leaves:
+            #azs_print(azs)
+
+        #print(ru.CLIENT_LEAVE.format(time_leaving()))
+    #print(orders)
 
 if __name__ == '__main__':
     main()
