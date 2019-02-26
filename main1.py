@@ -80,28 +80,10 @@ def azs_print(list_azs):
 
 def azs_choice(list_azs, ben):
     """ Choice automat and return it's number """
-    # Получает на вход list_azs, марку бензина и, в зависимсти от марки безина и очерди, возвращает номер автомата, куда встант машина.
-    queue = {1: 0, 2: 0, 3: 0}
-
-    # это для примера, в таком формате подаются переменные на вход
-    '''list_azs = [{'max_tern': 3, 'mark': 'АИ-80', 'tern': 1},
-                {'max_tern': 2, 'mark': 'АИ-92', 'tern': 2},
-                {'max_tern': 4, 'mark': ['АИ-92', 'АИ-95', 'АИ-98'], 'tern': 3}]
-    ben = 'АИ-92' '''
-
     for i in list_azs:
-        t = i['tern']
-        if i['mark'] == ben and i['max_tern'] >= queue[t]:
-            queue[t] += 1
-            return i['tern']
-        if i['mark'] == ['АИ-92', 'АИ-95', 'АИ-98']:
-            lst = ['АИ-92', 'АИ-95', 'АИ-98']
-            for j in lst:
-                if j == ben and i['max_tern'] >= queue[t]:
-                    queue[t] += 1
-                    return i['tern']
-    # Стоит учесть, что если свободных мест не будет, то функция возвратит None.
-    # Ну или можно прописать через else, что нужно возвратить в таком случае
+        if ben in i['mark'] and i['max_tern'] >= i['tern']:
+            i['tern'] += 1
+            return i['num']
 
 
 def main():
