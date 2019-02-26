@@ -16,9 +16,9 @@ def azs_read():
             dic = {}
             dic['num'] = int(lst[0])
             dic['max_tern'] = int(lst[1])
-            dic['marks'] = set()
+            dic['mark'] = set()
             for num in range(2, len(lst)):
-                dic['marks'].add(lst[num])
+                dic['mark'].add(lst[num])
             dic['tern'] = 0
             lst_azs.append(dic)
     return lst_azs
@@ -73,6 +73,11 @@ def time_leaving(hours, duration):
 
 def azs_print(list_azs):
     """ Prints information about each automat. """
+    for automat in list_azs:
+        print(ru.AZS_INF.format(automat['num'],
+                                automat['max_tern'],
+                                automat['mark'],
+                                automat['mark']*'*'))
 
 
 def azs_choice(list_azs, ben):
@@ -99,20 +104,29 @@ def main():
 
         # отслежка прибытия (с учётом одновременного)
         if time == orders[count]['time']:
+            num_automat = azs_choice(azs, orders[count]['mark'])
             print(ru.NEW_CLIENT.format(time, orders[count]['mark'],
                                        orders[count]['liters'],
-                                       time_dur, azs_choice(azs)))
+                                       time_dur,
+                                       num_automat))
+
+            azs[num_automat-1]['tern'] += 1
             min_before += 1
             count += 1
+
         elif min_hour(min_before) == orders[count]['time']:
+            num_automat = azs_choice(azs, orders[count]['mark'])
             print(ru.NEW_CLIENT.format(min_hour(min_before),
                                        orders[count]['mark'],
                                        orders[count]['liters'],
-                                       time_dur, azs_choice(azs)))
+                                       time_dur,
+                                       num_automat))
+
+            azs[num_automat - 1]['tern'] += 1
             count += 1
+
         else:
             min_before += 1
-
 
         azs_print(azs)
 
