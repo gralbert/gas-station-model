@@ -8,23 +8,20 @@ import random
 
 def azs_read():
     """ Read azs.txt and return list of dict-s with automats. """
-    # Должна возвращать список словарей такого плана: [{'max_tern': , 'marks': , 'tern': }, {'max_tern': , ....}.. ]
-    lst = {}
+    lst_azs = []
     with open('azs.txt', 'r') as f_in:
-        text = f_in.readlines()
-        text = [line.strip() for line in text]
-        for i in range(len(text)):
-            lst_1 = {}
-            line = text[i]
-            line = line.split()
-            [lst_1['max_tern']] = line[1]
-            lst_2 = []
-            for j in range(2, len(line)):
-                h = line[j]
-                lst_2.append(h)
-            lst_1.update({'marks': lst_2})
-            lst[line[0]] = lst_1
-    return lst
+        azs = f_in.readlines()
+        for line in azs:
+            lst = line.split()
+            dic = {}
+            dic['num'] = int(lst[0])
+            dic['max_tern'] = int(lst[1])
+            dic['marks'] = set()
+            for num in range(2, len(lst)):
+                dic['marks'].add(lst[num])
+            dic['tern'] = 0
+            lst_azs.append(dic)
+    return lst_azs
 
 
 def oder_read():
